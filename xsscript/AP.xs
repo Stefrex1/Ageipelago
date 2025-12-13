@@ -1,3 +1,7 @@
+include "./ProgressionItems.xs";
+include "./ResourceItems.xs";
+
+
 int itemArray = -1;
 int locationArray = -1;
 
@@ -8,10 +12,6 @@ int pingRepeatCount = 0;
 float protocol = -1;
 int worldId = -1;
 int lastMessageId = -1;
-
-bool checkItems = false;
-bool checkUnits = false;
-bool checkMessages = false;
 
 void AP_init()
 {
@@ -47,16 +47,10 @@ void AP_Read()
     worldId = xsReadInt();
     int items = xsReadInt();
     if (items == 1) {
-        checkItems = true;
+        xsEnableRule("ReadItems");
     }
     int units = xsReadInt();
-    if (units == 1) {
-        checkUnits = true;
-    }
     int messages = xsReadInt();
-    if (messages == 1) {
-        checkMessages = true;
-    }
     xsCloseFile();
 }
 
@@ -86,5 +80,28 @@ rule ReadAP
 
     if (pingRepeatCount >= 5) {
         xsChatData("<RED>AP Client disconnected. Cannot send locations or receive items until connection is reestablised.");
+    }
+}
+
+rule ReadItems
+    inactive
+    minInterval 1
+    maxInterval 1
+{
+    xsOpenFile("Items");
+    for (i = 0; < 12) {
+        int itemId = xsReadInt();
+        GiveItem(itemId);
+    }
+    xsCloseFile();
+    xsDisableSelf();
+}
+
+void GiveItem(int itemId = -1) {
+    if (itemId <= 25) {
+        GiveResource(itemId);
+    }
+    if (itemId >= 1000 || itemId < 3000) {
+        GiveProgressionItem(itemId);
     }
 }

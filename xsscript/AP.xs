@@ -49,6 +49,14 @@ void AP_Read()
     if (items == 1) {
         xsEnableRule("ReadItems");
     }
+    int free_items = xsReadInt();
+    if (free_items == 1) {
+        xsEnableRule("FreeItems");
+    }
+    int free_locations = xsReadInt();
+    if (free_locations == 1) {
+        xsEnableRule("FreeLocations");
+    }
     int units = xsReadInt();
     int messages = xsReadInt();
     xsCloseFile();
@@ -88,10 +96,58 @@ rule ReadItems
     minInterval 1
     maxInterval 1
 {
-    xsOpenFile("Items");
+    xsOpenFile("items");
+    int itemCount = xsGetFileSize();
+    for (i = 0; < itemCount) {
+        int itemId = xsReadInt();
+        if (xsArrayGetInt(itemArray, i) == -1) {
+            GiveItem(itemId);
+            xsArraySetInt(itemArray, i, itemId);
+        }
+    }
+    xsCloseFile();
+    xsDisableSelf();
+}
+
+rule FreeItems
+    inactive
+    minInterval 1
+    maxInterval 1
+{
+    xsOpenFile("free_items");
     for (i = 0; < 12) {
         int itemId = xsReadInt();
-        GiveItem(itemId);
+        if (itemId == -1) {
+            continue;
+        }
+        for (j = 0; < 12) {
+            if (xsArrayGetInt(itemArray, i) == itemId) {
+                xsArraySetInt(itemArray, i, -1);
+            }
+        }
+    }
+    xsCloseFile();
+    xsDisableSelf();
+}
+
+rule FreeLocations
+    inactive
+    minInterval 1
+    maxInterval 1
+{
+    xsOpenFile("locations");
+    int locationCount = xsGetFileSize();
+    for (i = 0; < locationCount) {
+        int locationId = xsReadInt();
+        int arraySize = xsArrayGetSize(locationArray);
+        for (j = 0; < arraySize - 1) {
+            if (xsArrayGetInt(locationArray, j) == locationId) {
+                int nextLocation = xsArrayGetInt(locationArray, j + 1);
+                xsArraySetInt(locationArray, j, nextLocation);
+                xsArraySetInt(locationArray, j + 1, locationId);
+            }
+        }
+        xsArrayResizeInt(locationArray, arraySize - 1);
     }
     xsCloseFile();
     xsDisableSelf();

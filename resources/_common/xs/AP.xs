@@ -89,6 +89,16 @@ void GiveItem(int itemId = -1) {
     }
 }
 
+void GiveScenarioSpecificItems(string filename = "") {
+  xsOpenFile(filename);
+  int itemCount = xsGetFileSize() / 4;
+  for (i = 0; < itemCount) {
+    int item = xsReadInt();
+    GiveItem(item);
+  }
+  xsCloseFile();
+}
+
 // This rule prints the value of a every 2 seconds.
 rule ReadAP
     active

@@ -1,7 +1,13 @@
 include "./AP.xs";
 
+
+void InitScenarioSpecific() {
+  GiveScenarioSpecificItems("ATT2");
+}
+
 void main() {
   AP_init();
+  InitScenarioSpecific();
 }
 
 // Scenario-specific locations

@@ -77,7 +77,8 @@ Sent from the client to the game to confirm that the client is still connected a
 |Protocol|float|What AP version is expected by the game|
 |WorldId|int|The ID of the AP World being played|
 |CheckItems|int|If 1, the game reads the `items.xsdat` file|
-|CheckMessages|int|If 1, the game reads the `messages.xsdat` file|
+|ResetItems|int|If 1, the game reads the `reset_items.xsdat` file|
+|CheckLocations|int|If 1, the game reads the `locations.xsdat` file|
 |CheckUnitBuffer|int|If 1, the game reads the `units.xsdat` file. This will only be 1 if the client knows that `CurrentUnitBufferRemaining` is 0|
 
 ### items.xsdat NOT IMPLEMENTED

@@ -9,6 +9,8 @@ int clientPing = -1;
 int lastPing = -1;
 int pingRepeatCount = 0;
 
+int completed = 0
+
 float protocol = 6.5;
 int worldId = 2;
 int lastMessageId = -1;
@@ -30,7 +32,8 @@ void AP_Write()
     for (i = 0; < 12) {
         xsWriteInt(xsArrayGetInt(itemArray, i));
     }
-    for (i = 0; < 31) {
+    xsWriteInt(completed);
+    for (i = 0; < 30) {
     xsWriteInt(i);
     }
     for (i = 0; < xsArrayGetSize(locationArray)) {
@@ -68,6 +71,9 @@ void AP_Read()
     }
     int units = xsReadInt();
     int messages = xsReadInt();
+    if (messages == 1) {
+        xsEnableRule("ReadMessages");
+    }
     xsCloseFile();
 }
 
@@ -90,17 +96,21 @@ void GiveItem(int itemId = -1) {
     }
 }
 
-void GiveScenarioSpecificItems(string filename = "") {
+void ScenarioSpecificReadInit(string filename = "") {
   xsOpenFile(filename);
   int itemCount = xsGetFileSize() / 4;
-  for (i = 0; < itemCount) {
+  completed = xsReadInt();
+  for (i = 1; < itemCount) {
     int item = xsReadInt();
     GiveItem(item, filename);
   }
   xsCloseFile();
 }
 
-// This rule prints the value of a every 2 seconds.
+void GiveVictory() {
+    completed = 1;
+}
+
 rule ReadAP
     active
     minInterval 1
@@ -176,6 +186,25 @@ rule FreeLocations
             }
         }
         xsArrayResizeInt(locationArray, arraySize - 1);
+    }
+    xsCloseFile();
+    xsDisableSelf();
+}
+
+rule ReadMessages
+    inactive
+    minInterval 1
+    maxInterval 1
+{
+    xsOpenFile("messages");
+    int messageCount = xsReadInt();
+    for (i = 0; < messageCount) {
+        int nextMessageId = xsReadInt();
+        if (lastMessageId <  nextMessageId) {
+            lastMessageId = nextMessageId;
+            string message = xsReadString();
+            xsChatData(message);
+        }
     }
     xsCloseFile();
     xsDisableSelf();

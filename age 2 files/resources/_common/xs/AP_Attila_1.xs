@@ -2,7 +2,7 @@ include "./AP.xs";
 
 
 void InitScenarioSpecific() {
-  GiveScenarioSpecificItems("ATT1");
+  ScenarioSpecificReadInit("ATT1");
 }
 
 void main() {

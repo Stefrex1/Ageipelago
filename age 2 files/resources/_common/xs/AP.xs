@@ -9,7 +9,7 @@ int clientPing = -1;
 int lastPing = -1;
 int pingRepeatCount = 0;
 
-int completed = 0
+int completed = 0;
 
 float protocol = 6.5;
 int worldId = 2;
@@ -72,6 +72,7 @@ void AP_Read()
     int units = xsReadInt();
     int messages = xsReadInt();
     if (messages == 1) {
+        xsChatData("ReadMessages");
         xsEnableRule("ReadMessages");
     }
     xsCloseFile();
@@ -79,20 +80,17 @@ void AP_Read()
 
 void AP_Check_Location(int locationId = -1)
 {
-    xsChatData("Location Id : %d", locationId);
     int locationSize = xsArrayGetSize(locationArray);
-    xsChatData("Location Array Size : %d", locationSize);
     xsArrayResizeInt(locationArray, locationSize + 1);
     xsArraySetInt(locationArray, locationSize, locationId);
-    xsChatData("Location Id : %d", xsArrayGetInt(locationArray, locationSize));
 }
 
-void GiveItem(int itemId = -1) {
+void GiveItem(int itemId = -1, string filename = "") {
     if (itemId <= 25) {
         GiveResource(itemId);
     }
     if (itemId >= 1000 || itemId < 3000) {
-        GiveProgressionItem(itemId);
+        GiveProgressionItem(itemId, filename);
     }
 }
 
@@ -101,8 +99,8 @@ void ScenarioSpecificReadInit(string filename = "") {
   int itemCount = xsGetFileSize() / 4;
   completed = xsReadInt();
   for (i = 1; < itemCount) {
-    int item = xsReadInt();
-    GiveItem(item, filename);
+    int itemId = xsReadInt();
+    GiveItem(itemId, filename);
   }
   xsCloseFile();
 }

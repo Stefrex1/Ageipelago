@@ -12,6 +12,7 @@ int lastPing = -1;
 int pingRepeatCount = 0;
 
 int completed = 0;
+int scenarioId = 0;
 
 float protocol = 6.5;
 int worldId = 2;
@@ -36,6 +37,7 @@ void AP_Write()
         xsWriteInt(xsArrayGetInt(itemArray, i));
     }
     xsWriteInt(completed);
+    xsWriteInt(scenarioId);
     for (i = 0; < 30) {
     xsWriteInt(i);
     }
@@ -88,6 +90,10 @@ void AP_Check_Location(int locationId = -1)
     int locationSize = xsArrayGetSize(locationArray);
     xsArrayResizeInt(locationArray, locationSize + 1);
     xsArraySetInt(locationArray, locationSize, locationId);
+}
+
+void SetScenarioId(int id = 0) {
+    scenarioId = id;
 }
 
 void ScenarioSpecificInit(string filename = "") {

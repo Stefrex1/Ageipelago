@@ -7,6 +7,7 @@ void InitScenarioSpecific() {
 void main() {
   AP_init();
   InitScenarioSpecific();
+  SetScenarioId(104);
 }
 
 // Scenario-specific locations

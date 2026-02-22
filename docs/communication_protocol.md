@@ -61,9 +61,10 @@ Each scenario has a unique .xsdat file.
 |LatestMessageId|int|The ID of the latest played message, assumes all previously sent messages have been played in order|
 |ItemId1-ItemId12|int*12|The most recent item packet Ids received by the game|
 |ScenarioCompleted|bool|Returns scenario global variable completed, which is 1 if the scenario has been completed|
+|ScenarioId|int|The id of the scenario, used when the player is playing a campaign|
 |CurrentUnitBufferId|int|The latest unit buffer, set to -1 if no buffer has been received|
 |CurrentUnitBufferRemaining|int|How many units are left from the current item to spawn|
-|x28 spaces|undetermined|Reserved for future use|
+|x27 spaces|undetermined|Reserved for future use|
 |Locations (L)|int*L|All locations checked that have not been confirmed by AP client|
 
 ### AP.xsdat

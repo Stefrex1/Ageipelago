@@ -26,6 +26,8 @@ const int elite-genitour = 1012;
 const int elephant-archer = 873;
 const int elite-elephant-archer = 875;
 const int xianbeiRaider = 1952;
+const int bolasRider = 2569;
+const int eliteBolasRider = 2571;
 
 // Barracks
 const int militia = 74;
@@ -40,6 +42,10 @@ const int halberdier = 359;
 const int eagle-warrior = 751;
 const int heavy-eagle-warrior = 753;
 const int elite-eagle-warrior = 752;
+const int champiScout = 2550;
+const int champiRunner = 2588;
+const int champiWarrior = 2552;
+const int eliteChampiWarrior = 2554;
 const int fireLancer = 1901;
 const int eliteFireLancer = 1903;
 const int condottiero = 882;
@@ -47,6 +53,12 @@ const int huskarlBarracks = 759;
 const int eliteHuskarlBarracks = 761;
 const int town-center-flemish-pikeman = 1699;
 const int jianSwordsman = 1794;
+const int templeGuard = 2586;
+const int eliteTempleGuard = 2587;
+const int ibirapemaWarrior = 2582;
+const int eliteIbirapemaWarrior = 2584;
+const int warDog = 2612;
+const int eliteWarDog = 2613;
 
 // Stable
 const int scout-cavalry = 448;
@@ -217,7 +229,13 @@ const int elite-tiger-cavalry = 1951;
 const int fire-archer = 1968;
 const int elite-fire-archer = 1970;
 const int qizilbashWarrior = 1817;
-const int elite-QizilbashWarrior = 1829;
+const int eliteQizilbashWarrior = 1829;
+const int blackwoodArcher = 2579;
+const int eliteBlackwoodArcher = 2581;
+const int kona = 2566;
+const int eliteKona = 2568;
+const int guechaWarrior = 2562;
+const int eliteGuechaWarrior = 2564;
 
 
 // Dock
@@ -245,6 +263,10 @@ const int caravel = 1004;
 const int elite-caravel = 1006;
 const int longboat = 250;
 const int elite-longboat = 533;
+const int hulk = 2626;
+const int warHulk = 2627;
+const int carrack = 2628;
+const int catapultGalleon = 2633;
 
 
 
@@ -270,6 +292,8 @@ void InitUnitsanityArchery() {
     xsEffectAmount(cEnableObject, elephant-archer, cAttributeDisable, 0, 1);
     xsEffectAmount(cEnableObject, elite-elephant-archer, cAttributeDisable, 0, 1);
     xsEffectAmount(cEnableObject, xianbeiRaider, cAttributeDisable, 0, 1);
+    xsEffectAmount(cEnableObject, bolasRider, cAttributeDisable, 0, 1);
+    xsEffectAmount(cEnableObject, eliteBolasRider, cAttributeDisable, 0, 1);
 }
 
 void InitUnitsanityBarracks() {
@@ -292,6 +316,12 @@ void InitUnitsanityBarracks() {
     xsEffectAmount(cEnableObject, eliteHuskarlBarracks, cAttributeDisable, 0, 1);
     xsEffectAmount(cEnableObject, town-center-flemish-pikeman, cAttributeDisable, 0, 1);
     xsEffectAmount(cEnableObject, jianSwordsman, cAttributeDisable, 0, 1);
+    xsEffectAmount(cEnableObject, templeGuard, cAttributeDisable, 0, 1);
+    xsEffectAmount(cEnableObject, eliteTempleGuard, cAttributeDisable, 0, 1);
+    xsEffectAmount(cEnableObject, ibirapemaWarrior, cAttributeDisable, 0, 1);
+    xsEffectAmount(cEnableObject, eliteIbirapemaWarrior, cAttributeDisable, 0, 1);
+    xsEffectAmount(cEnableObject, warDog, cAttributeDisable, 0, 1);
+    xsEffectAmount(cEnableObject, eliteWarDog, cAttributeDisable, 0, 1);
 }
 
 void InitUnitsanityStable() {
@@ -468,7 +498,13 @@ void InitUnitsanityCastle() {
     xsEffectAmount(cEnableObject, fire-archer, cAttributeDisable, 0, 1);
     xsEffectAmount(cEnableObject, elite-fire-archer, cAttributeDisable, 0, 1);
     xsEffectAmount(cEnableObject, qizilbashWarrior, cAttributeDisable, 0, 1);
-    xsEffectAmount(cEnableObject, elite-QizilbashWarrior, cAttributeDisable, 0, 1);
+    xsEffectAmount(cEnableObject, eliteQizilbashWarrior, cAttributeDisable, 0, 1);
+    xsEffectAmount(cEnableObject, blackwoodArcher, cAttributeDisable, 0, 1);
+    xsEffectAmount(cEnableObject, eliteBlackwoodArcher, cAttributeDisable, 0, 1);
+    xsEffectAmount(cEnableObject, kona, cAttributeDisable, 0, 1);
+    xsEffectAmount(cEnableObject, eliteKona, cAttributeDisable, 0, 1);
+    xsEffectAmount(cEnableObject, guechaWarrior, cAttributeDisable, 0, 1);
+    xsEffectAmount(cEnableObject, eliteGuechaWarrior, cAttributeDisable, 0, 1);
 }
 
 void InitUnitsanityDock() {
@@ -496,4 +532,8 @@ void InitUnitsanityDock() {
     xsEffectAmount(cEnableObject, elite-caravel, cAttributeDisable, 0, 1);
     xsEffectAmount(cEnableObject, longboat, cAttributeDisable, 0, 1);
     xsEffectAmount(cEnableObject, elite-longboat, cAttributeDisable, 0, 1);
+    xsEffectAmount(cEnableObject, hulk, cAttributeDisable, 0, 1);
+    xsEffectAmount(cEnableObject, warHulk, cAttributeDisable, 0, 1);
+    xsEffectAmount(cEnableObject, carrack, cAttributeDisable, 0, 1);
+    xsEffectAmount(cEnableObject, catapultGalleon, cAttributeDisable, 0, 1);
 }

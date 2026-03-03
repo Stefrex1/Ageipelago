@@ -4,11 +4,6 @@ include "structs.xs";
 // keep the id for the town center itself.
 const int townCenterId = 109;
 
-//Tech
-const int university = 209;
-const int blacksmith = 103;
-const int monastery = 104;
-
 //Military
 const int barracks = 12;
 const int archeryRange = 87;
@@ -50,6 +45,8 @@ void InitBuildsanityStructs() {
     defineStruct("Buildsanity");
     defineStructAttribute("Buildsanity", "buildings", TYPE_STRUCT_ARRAY);
     defineStructAttribute("Buildsanity", "currentBuildingTotalCost", TYPE_FLOAT);
+    defineStructAttribute("Buildsanity", "CastlesBuilt", TYPE_FLOAT);
+    defineStructAttribute("Buildsanity", "wondersBuilt", TYPE_FLOAT);
 
     buildsanity = new("Buildsanity");
     int buildings = xsArrayCreateVector(0, cInvalidVector, "p1-buildings");
@@ -68,7 +65,7 @@ void InitBuildsanityAlways() {
     structSetString(wonder, "name", "Wonder");
     structSetInt(wonder, "id", 276);
     structSetInt(wonder, "playerCount", xsGetObjectCount(1, structGetInt(wonder, "id")));
-    structSetFloat(wonder, "resourceCost", 175.0);
+    structSetFloat(wonder, "resourceCost", 0.0);
     xsArraySetVector(buildings, buildingsCount, wonder);
     buildingsCount++;
 
@@ -79,7 +76,7 @@ void InitBuildsanityAlways() {
     structSetFloat(outpost, "resourceCost", 30.0);
     xsArraySetVector(buildings, buildingsCount, outpost);
 
-    xsEffectAmount(cSetAttribute, structGetInt(wonder, "id"), cDisabledFlag, 1.0, 1);
+    xsEffectAmount(cSetAttribute, structGetInt(wonder, "id"), cDisabledFlag, 1.0, 0);
     xsEffectAmount(cSetAttribute, structGetInt(outpost, "id"), cDisabledFlag, 1.0, 1);
 }
 
@@ -162,7 +159,6 @@ void InitBuildsanityEconomy() {
     structSetInt(market, "playerCount", xsGetObjectCount(1, structGetInt(market, "id")));
     structSetFloat(market, "resourceCost", 175.0);
     xsArraySetVector(buildings, buildingsCount, market);
-    buildingsCount++;
 
     xsEffectAmount(cSetAttribute, structGetInt(townCenter, "id"), cDisabledFlag, 1, 1);
     xsEffectAmount(cSetAttribute, structGetInt(house, "id"), cDisabledFlag, 1, 1);
@@ -176,9 +172,37 @@ void InitBuildsanityEconomy() {
 }
 
 void InitBuildsanityTech() {
-    xsEffectAmount(cSetAttribute, university, cDisabledFlag, 1, 1);
-    xsEffectAmount(cSetAttribute, blacksmith, cDisabledFlag, 1, 1);
-    xsEffectAmount(cSetAttribute, monastery, cDisabledFlag, 1, 1);
+    int techBuildingsCount = 9;
+    int buildings = structGetInt(buildsanity, "buildings");
+    int buildingsCount = xsArrayGetSize(buildings);
+    xsArrayResizeVector(buildings, buildingsCount + techBuildingsCount);
+
+    vector university = new("Building");
+    structSetString(university, "name", "University");
+    structSetInt(university, "id", 209);
+    structSetInt(university, "playerCount", xsGetObjectCount(1, structGetInt(university, "id")));
+    structSetFloat(university, "resourceCost", 200.0);
+    xsArraySetVector(buildings, buildingsCount, university);
+    buildingsCount++;
+
+    vector blacksmith = new("Building");
+    structSetString(blacksmith, "name", "Blacksmith");
+    structSetInt(blacksmith, "id", 103);
+    structSetInt(blacksmith, "playerCount", xsGetObjectCount(1, structGetInt(blacksmith, "id")));
+    structSetFloat(blacksmith, "resourceCost", 150.0);
+    xsArraySetVector(buildings, buildingsCount, blacksmith);
+    buildingsCount++;
+
+    vector monastery = new("Building");
+    structSetString(monastery, "name", "Monastery");
+    structSetInt(monastery, "id", 104);
+    structSetInt(monastery, "playerCount", xsGetObjectCount(1, structGetInt(monastery, "id")));
+    structSetFloat(monastery, "resourceCost", 175.0);
+    xsArraySetVector(buildings, buildingsCount, monastery);
+
+    xsEffectAmount(cSetAttribute, structGetInt(university, "id"), cDisabledFlag, 1, 1);
+    xsEffectAmount(cSetAttribute, structGetInt(blacksmith, "id"), cDisabledFlag, 1, 1);
+    xsEffectAmount(cSetAttribute, structGetInt(monastery, "id"), cDisabledFlag, 1, 1);
 }
 
 void InitBuildsanityMilitary() {
@@ -247,29 +271,38 @@ void InitBuildsanity(bool econ = false, bool tech = false, bool mil = false, boo
     xsEnableRule("BuildsanityChecks");
 }
 
-int monasteryCount = 0;
-
 rule BuildsanityChecks
     inactive
     group Buildsanity
     highFrequency
 {
     float buildingTotalCost = xsPlayerAttribute(1, cAttributeValueCurrentBuildings);
+    float castlesBuilt = xsPlayerAttribute(1, cAttributeTotalCastlesBuilt);
+    float wondersBuilt = xsPlayerAttribute(1, cAttributeTotalWondersBuilt);
 
     if (structGetFloat(buildsanity, "currentBuildingTotalCost") > buildingTotalCost) {
         structSetFloat(buildsanity, "currentBuildingTotalCost", buildingTotalCost);
         return;
     }
 
-    if (buildingTotalCost - structGetFloat(buildsanity, "currentBuildingTotalCost") == 175.0) {
-        if (xsGetObjectCount(1, monastery) > monasteryCount) {
-            xsChatData("Monastery");
-        }
+    if (castlesBuilt > structGetFloat(buildsanity, "castlesBuilt")) {
+        structSetFloat(buildsanity, "castlesBuilt", castlesBuilt);
+        xsChatData("Castle");
+        return;
+    }
+
+    if (wondersBuilt > structGetFloat(buildsanity, "wondersBuilt")) {
+        structSetFloat(buildsanity, "wondersBuilt", wondersBuilt);
+        xsChatData("Wonder");
+        return;
+    }
+
+    float newBuildingCost = buildingTotalCost - structGetFloat(buildsanity, "currentBuildingTotalCost");
+    if (newBuildingCost == 175.0) {
         xsChatData("175");
     }
 
     structSetFloat(buildsanity, "currentBuildingTotalCost", buildingTotalCost);
-    monasteryCount = xsGetObjectCount(1, monastery);
 
     int buildings = structGetInt(buildsanity, "buildings");
     xsChatData("Buildingsanity vector x: %d", xsVectorGetX(buildsanity));
@@ -277,5 +310,5 @@ rule BuildsanityChecks
     xsChatData("Buildingsanity vector z: %d", xsVectorGetZ(buildsanity));
     xsChatData("Buildings int: %d", buildings);
     vector tc = xsArrayGetVector(buildings, 2);
-    printStructInstance(tc);
+    printStructInstance(buildsanity);
 }

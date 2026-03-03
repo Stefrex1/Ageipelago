@@ -52,28 +52,32 @@ void InitBuildsanityStructs() {
     defineStructAttribute("Buildsanity", "currentBuildingTotalCost", TYPE_FLOAT);
 
     buildsanity = new("Buildsanity");
-    int buildings = xsArrayCreateVector(50, cInvalidVector, "p1-buildings");
+    int buildings = xsArrayCreateVector(0, cInvalidVector, "p1-buildings");
     structSetInt(buildsanity, "buildings", buildings);
 }
 
 void InitBuildsanityAlways() {
+    int alwaysBuildingsCount = 2;
     int buildings = structGetInt(buildsanity, "buildings");
-    
+    int buildingsCount = xsArrayGetSize(buildings);
+    xsArrayResizeVector(buildings, buildingsCount + alwaysBuildingsCount);
+
     xsChatData("Buildings Array Pointer Always: %d", buildings);
 
     vector wonder = new("Building");
     structSetString(wonder, "name", "Wonder");
     structSetInt(wonder, "id", 276);
     structSetInt(wonder, "playerCount", xsGetObjectCount(1, structGetInt(wonder, "id")));
-    structSetInt(wonder, "resourceCost", 175.0);
-    xsArraySetVector(buildings, 0, wonder);
+    structSetFloat(wonder, "resourceCost", 175.0);
+    xsArraySetVector(buildings, buildingsCount, wonder);
+    buildingsCount++;
 
     vector outpost = new("Building");
     structSetString(outpost, "name", "Outpost");
     structSetInt(outpost, "id", 598);
     structSetInt(outpost, "playerCount", xsGetObjectCount(1, structGetInt(outpost, "id")));
-    structSetInt(outpost, "resourceCost", 30.0);
-    xsArraySetVector(buildings, 1, outpost);
+    structSetFloat(outpost, "resourceCost", 30.0);
+    xsArraySetVector(buildings, buildingsCount, outpost);
 
     xsEffectAmount(cSetAttribute, structGetInt(wonder, "id"), cDisabledFlag, 1.0, 1);
     xsEffectAmount(cSetAttribute, structGetInt(outpost, "id"), cDisabledFlag, 1.0, 1);
@@ -81,7 +85,10 @@ void InitBuildsanityAlways() {
 
 // TC Foundation disabled + Extra Town Centers
 void InitBuildsanityEconomy() {
+    int econBuildingsCount = 9;
     int buildings = structGetInt(buildsanity, "buildings");
+    int buildingsCount = xsArrayGetSize(buildings);
+    xsArrayResizeVector(buildings, buildingsCount + econBuildingsCount);
     
     xsChatData("Buildings Array Pointer Economy: %d", buildings);
 
@@ -89,64 +96,73 @@ void InitBuildsanityEconomy() {
     structSetString(townCenter, "name", "Town Center");
     structSetInt(townCenter, "id", 621);
     structSetInt(townCenter, "playerCount", xsGetObjectCount(1, townCenterId));
-    structSetInt(townCenter, "resourceCost", 375.0);
-    xsArraySetVector(buildings, 2, townCenter);
-    
+    structSetFloat(townCenter, "resourceCost", 375.0);
+    xsArraySetVector(buildings, buildingsCount, townCenter);
+    buildingsCount++;
+
     vector house = new("Building");
     structSetString(house, "name", "House");
     structSetInt(house, "id", 70);
     structSetInt(house, "playerCount", xsGetObjectCount(1, structGetInt(house, "id")));
-    structSetInt(house, "resourceCost", 25.0);
-    xsArraySetVector(buildings, 3, house);
+    structSetFloat(house, "resourceCost", 25.0);
+    xsArraySetVector(buildings, buildingsCount, house);
+    buildingsCount++;
 
     vector mill = new("Building");
     structSetString(mill, "name", "Mill");
     structSetInt(mill, "id", 68);
     structSetInt(mill, "playerCount", xsGetObjectCount(1, structGetInt(mill, "id")));
-    structSetInt(mill, "resourceCost", 100.0);
-    xsArraySetVector(buildings, 4, mill);
+    structSetFloat(mill, "resourceCost", 100.0);
+    xsArraySetVector(buildings, buildingsCount, mill);
+    buildingsCount++;
     
     vector miningCamp = new("Building");
     structSetString(miningCamp, "name", "Mining Camp");
     structSetInt(miningCamp, "id", 584);
     structSetInt(miningCamp, "playerCount", xsGetObjectCount(1, structGetInt(miningCamp, "id")));
-    structSetInt(miningCamp, "resourceCost", 100.0);
-    xsArraySetVector(buildings, 5, miningCamp);
+    structSetFloat(miningCamp, "resourceCost", 100.0);
+    xsArraySetVector(buildings, buildingsCount, miningCamp);
+    buildingsCount++;
     
     vector lumberCamp = new("Building");
     structSetString(lumberCamp, "name", "Lumber Camp");
     structSetInt(lumberCamp, "id", 562);
     structSetInt(lumberCamp, "playerCount", xsGetObjectCount(1, structGetInt(lumberCamp, "id")));
-    structSetInt(lumberCamp, "resourceCost", 100.0);
-    xsArraySetVector(buildings, 6, lumberCamp);
+    structSetFloat(lumberCamp, "resourceCost", 100.0);
+    xsArraySetVector(buildings, buildingsCount, lumberCamp);
+    buildingsCount++;
     
     vector dock = new("Building");
     structSetString(dock, "name", "Dock");
     structSetInt(dock, "id", 45);
     structSetInt(dock, "playerCount", xsGetObjectCount(1, structGetInt(dock, "id")));
-    structSetInt(dock, "resourceCost", 150.0);
-    xsArraySetVector(buildings, 7, dock);
+    structSetFloat(dock, "resourceCost", 150.0);
+    xsArraySetVector(buildings, buildingsCount, dock);
+    buildingsCount++;
     
     vector farm = new("Building");
     structSetString(farm, "name", "Farm");
     structSetInt(farm, "id", 50);
     structSetInt(farm, "playerCount", xsGetObjectCount(1, structGetInt(farm, "id")));
-    structSetInt(farm, "resourceCost", 60.0);
-    xsArraySetVector(buildings, 8, farm);
+    structSetFloat(farm, "resourceCost", 60.0);
+    xsArraySetVector(buildings, buildingsCount, farm);
+    buildingsCount++;
     
     vector fishTrap = new("Building");
     structSetString(fishTrap, "name", "Fish Trap");
     structSetInt(fishTrap, "id", 199);
     structSetInt(fishTrap, "playerCount", xsGetObjectCount(1, structGetInt(fishTrap, "id")));
-    structSetInt(fishTrap, "resourceCost", 100.0);
-    xsArraySetVector(buildings, 9, fishTrap);
+    structSetFloat(fishTrap, "resourceCost", 100.0);
+    xsArraySetVector(buildings, buildingsCount, fishTrap);
+    buildingsCount++;
 
     vector market = new("Building");
     structSetString(market, "name", "Fish Trap");
     structSetInt(market, "id", 84);
     structSetInt(market, "playerCount", xsGetObjectCount(1, structGetInt(market, "id")));
-    structSetInt(market, "resourceCost", 175.0);
-    xsArraySetVector(buildings, 10, market);
+    structSetFloat(market, "resourceCost", 175.0);
+    xsArraySetVector(buildings, buildingsCount, market);
+    buildingsCount++;
 
     xsEffectAmount(cSetAttribute, structGetInt(townCenter, "id"), cDisabledFlag, 1, 1);
     xsEffectAmount(cSetAttribute, structGetInt(house, "id"), cDisabledFlag, 1, 1);
